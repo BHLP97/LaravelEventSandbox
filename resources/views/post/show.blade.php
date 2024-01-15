@@ -1,22 +1,23 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Laravel</title>
-    </head>
-    <body class="antialiased">
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Number of Views</th>
-            </tr>
-            <tr>
-                <td>{{$post->id}}</td>
-                <td>{{$post->name}}</td>
-                <td>{{$post->num_views}}</td>
-            </tr>
-        </table>
-    </body>
-</html>
+@extends('layouts.app')
+<?php
+    use App\Models\User;
+?>
+@section('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header h5">Post from {{User::find($post->user_id)->name}}</div>
+                <div class="card-body">
+                    {{$post->content}}
+                </div>
+                <div class="card-footer">
+                    <div style="float: right">
+                        Number of views so far: {{$post->num_views}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>   
+@endsection

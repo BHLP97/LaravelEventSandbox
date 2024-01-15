@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Events\PostViewed;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -22,7 +23,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('post.create');
     }
 
     /**
@@ -30,7 +31,18 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'postContent' => 'required',
+        ],[
+            'postContent.required' => 'Please enter the content of the post'
+        ]);
+
+        $post = new Post();
+        $post->user_id = Auth::id();
+        $post->content = $request->postContent;
+        $post->save();
+
+        return redirect()->route("post.index");
     }
 
     /**
@@ -38,8 +50,9 @@ class PostController extends Controller
      */
     public function show($id)
     {
+        $viewer = Auth::user();
         $post = Post::find($id);
-        PostViewed::dispatch($post);
+        PostViewed::dispatch($viewer, $post);
         return view("post.show",["post"=>$post]);
     }
 

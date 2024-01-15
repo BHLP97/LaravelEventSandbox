@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -15,6 +16,7 @@ class PostViewed
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $viewer;
     public $post;
 
     /**
@@ -22,8 +24,9 @@ class PostViewed
      *
      * @return void
      */
-    public function __construct(Post $post)
+    public function __construct(User $viewer, Post $post)
     {
+        $this->viewer = $viewer;
         $this->post = $post;
     }
 
